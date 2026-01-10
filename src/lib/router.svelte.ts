@@ -11,6 +11,12 @@ export enum PGPMode {
 	VERIFY = 'verify'
 }
 
+export enum Pages {
+	HOME = 'Home',
+	GUIDE = 'Guide',
+	GENERATE_KEY = 'GenerateKey'
+}
+
 class Router {
 	// Raw state tracking window location
 	raw = $state({
@@ -33,12 +39,15 @@ class Router {
 		const pathParts = path.split('/').filter(Boolean);
 		const lastSegment = pathParts[pathParts.length - 1];
 
-		let page: 'Guide' | 'Home' = 'Home';
+		let page: Pages = Pages.HOME;
 		let fingerprint: string | null = null;
 		let basePath = path;
 
 		if (lastSegment === 'Guide') {
-			page = 'Guide';
+			page = Pages.GUIDE;
+			basePath = '/' + pathParts.slice(0, -1).join('/');
+		} else if (lastSegment === 'GenerateKey') {
+			page = Pages.GENERATE_KEY;
 			basePath = '/' + pathParts.slice(0, -1).join('/');
 		} else if (lastSegment && /^[a-f0-9]{16,}$/i.test(lastSegment)) {
 			fingerprint = lastSegment;
@@ -78,14 +87,17 @@ class Router {
 	}
 
 	// Semantic Actions
-	openGuide() {
+	openPage(page: Pages) {
 		const base = this.activeRoute.basePath === '/' ? '' : this.activeRoute.basePath;
-		this.navigate(`${base}/Guide`);
+		if (page === Pages.HOME) {
+			this.navigate(`${base}/`);
+		} else {
+			this.navigate(`${base}/${page}`);
+		}
 	}
 
 	openHome() {
-		const base = this.activeRoute.basePath === '/' ? '' : this.activeRoute.basePath;
-		this.navigate(`${base}/`);
+		this.openPage(Pages.HOME);
 	}
 
 	openKey(fingerprint: string, mode?: PGPMode) {

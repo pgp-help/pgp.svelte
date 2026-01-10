@@ -101,9 +101,6 @@
 
 	let isPrivate = $derived(keyObject?.isPrivate() ?? false);
 
-	// Helper to determine if mode switching should be available
-	let canSwitchMode = $derived(keyObject !== null);
-
 	// Helper to determine valid modes for current key
 	let availableModes = $derived.by(() => {
 		if (!keyObject) return [PGPMode.ENCRYPT];
@@ -156,7 +153,7 @@
 			}
 			pgpKeyComponent?.nudgeForDecryption();
 			output = '';
-			error = '';
+			error = 'Unlock the private key to proceed.';
 			return; // Don't proceed until key is unlocked
 		}
 
@@ -227,7 +224,7 @@
 				{/if}
 			</fieldset>
 
-			{#if canSwitchMode && availableModes.length > 1}
+			{#if availableModes.length > 1}
 				<div class="divider"></div>
 				<fieldset class="fieldset">
 					<legend class="fieldset-legend">Mode</legend>
@@ -249,40 +246,51 @@
 
 			<div class="divider"></div>
 
-			<fieldset class="fieldset">
-				<legend class="fieldset-legend"
-					>{mode === PGPMode.DECRYPT ? 'Encrypted Message' : 'Message'}</legend
-				>
-				<CopyableTextarea
-					bind:value={message}
-					placeholder={mode === PGPMode.DECRYPT
-						? 'Paste encrypted message...'
-						: 'Type your secret message...'}
-					label={mode === PGPMode.DECRYPT ? 'Encrypted Message' : 'Message'}
-					selectAllOnFocus={false}
-					{error}
-					buttons={copyButtonsSnippet}
-				/>
-			</fieldset>
-
-			{#snippet outputButtonsSnippet()}
-				<CopyButtons value={output} />
-			{/snippet}
-
-			<fieldset class="fieldset">
-				<legend class="fieldset-legend">
-					{mode === PGPMode.DECRYPT ? 'Decrypted Message' : 'Encrypted Message'}
-				</legend>
-				<CopyableTextarea
-					value={output}
-					readonly={true}
-					placeholder={mode === PGPMode.DECRYPT
-						? 'Decrypted output will appear here...'
-						: 'Encrypted output will appear here...'}
-					label={mode === PGPMode.DECRYPT ? 'Decrypted Message' : 'Encrypted Message'}
-					buttons={outputButtonsSnippet}
-				/>
-			</fieldset>
+			{#if mode === PGPMode.ENCRYPT}
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Message</legend>
+					<CopyableTextarea
+						bind:value={message}
+						placeholder="Type your secret message..."
+						label="Message"
+						selectAllOnFocus={false}
+						{error}
+						buttons={copyButtonsSnippet}
+					/>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Encrypted Message</legend>
+					<CopyableTextarea
+						value={output}
+						readonly={true}
+						placeholder="Encrypted output will appear here..."
+						label="Encrypted Message"
+						buttons={copyButtonsSnippet}
+					/>
+				</fieldset>
+			{:else if mode === PGPMode.DECRYPT}
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Encrypted Message</legend>
+					<CopyableTextarea
+						bind:value={message}
+						placeholder="Paste encrypted message..."
+						label="Encrypted Message"
+						selectAllOnFocus={false}
+						{error}
+						buttons={copyButtonsSnippet}
+					/>
+				</fieldset>
+				<fieldset class="fieldset">
+					<legend class="fieldset-legend">Decrypted Message</legend>
+					<CopyableTextarea
+						value={output}
+						readonly={true}
+						placeholder="Decrypted output will appear here..."
+						label="Decrypted Message"
+						buttons={copyButtonsSnippet}
+					/>
+				</fieldset>
+			{/if}
 		</form>
 	</div>
 </main>

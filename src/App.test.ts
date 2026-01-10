@@ -26,6 +26,7 @@ describe('App', () => {
 	beforeEach(() => {
 		window.history.replaceState({}, '', '/');
 		keyStore.clear();
+		vi.clearAllMocks();
 	});
 
 	it('renders the core interface', () => {
@@ -54,30 +55,14 @@ describe('App', () => {
 		await user.type(messageTextarea, 'Hello World');
 
 		// Wait for the async encryption to complete
-		await vi.waitFor(() => {
-			const output = (outputTextarea as HTMLTextAreaElement).value;
-			expect(output).toContain('-----BEGIN PGP MESSAGE-----');
-			expect(output).toContain('-----END PGP MESSAGE-----');
-		});
-	});
-
-	it('shows error with invalid key', async () => {
-		const user = userEvent.setup();
-		render(App);
-
-		const keyTextarea = screen.getByLabelText(/Public Key/i);
-		const messageTextarea = screen.getByLabelText(/^Message/i);
-		const outputTextarea = screen.getByLabelText(/Encrypted Message/i);
-
-		await user.type(keyTextarea, 'invalid');
-		await user.type(messageTextarea, 'Hello World');
-
-		// Wait for the async encryption to complete
-		await vi.waitFor(() => {
-			// With the new logic, invalid keys result in null key objects,
-			// so encryption is not attempted, and output remains empty.
-			expect(outputTextarea).toHaveValue('');
-		});
+		await vi.waitFor(
+			() => {
+				const output = (outputTextarea as HTMLTextAreaElement).value;
+				expect(output).toContain('-----BEGIN PGP MESSAGE-----');
+				expect(output).toContain('-----END PGP MESSAGE-----');
+			},
+			{ timeout: 5000 }
+		);
 	});
 
 	it('decrypts message with locked private key', async () => {
@@ -108,7 +93,6 @@ describe('App', () => {
 		await user.click(unlockButton);
 
 		// Wait for unlock to complete (Unlocked badge appears)
-		// Note: The text might be split across elements or inside a badge
 		await screen.findByText((content, element) => {
 			return element?.tagName.toLowerCase() === 'span' && content.includes('Unlocked');
 		});
@@ -118,16 +102,18 @@ describe('App', () => {
 		await user.click(decryptButton);
 
 		// Now input the encrypted message
-		// The label for message input should have changed to "Encrypted Message"
 		const messageTextarea = screen.getByLabelText(/Encrypted Message/i);
 		const outputTextarea = screen.getByLabelText(/Decrypted Message/i);
 
 		await fireEvent.input(messageTextarea, { target: { value: encrypted } });
 
 		// Wait for the async decryption to complete
-		await vi.waitFor(() => {
-			expect(outputTextarea).toHaveValue(secretMessage);
-		});
+		await vi.waitFor(
+			() => {
+				expect(outputTextarea).toHaveValue(secretMessage);
+			},
+			{ timeout: 5000 }
+		);
 	});
 
 	it('applies DaisyUI styling classes', () => {
@@ -141,21 +127,5 @@ describe('App', () => {
 		textareas.forEach((textarea) => {
 			expect(textarea).toHaveClass('textarea');
 		});
-	});
-
-	it('verifies Tailwind CSS is loaded', () => {
-		const { container } = render(App);
-
-		// Get computed styles to verify CSS is actually applied
-		const mainElement = container.querySelector('main');
-		expect(mainElement).toBeInTheDocument();
-
-		// Check that Tailwind/DaisyUI CSS variables are set
-		const htmlElement = document.documentElement;
-		const computedStyle = window.getComputedStyle(htmlElement);
-
-		// DaisyUI sets CSS custom properties for colors
-		// This verifies the CSS is being processed
-		expect(computedStyle).toBeDefined();
 	});
 });

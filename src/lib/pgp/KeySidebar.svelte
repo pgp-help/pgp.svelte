@@ -1,7 +1,8 @@
 <script lang="ts">
 	import { keyStore } from './keyStore.svelte.js';
 	import KeyListItem from './KeyListItem.svelte';
-	import { router } from '../router.svelte.js';
+	import { router, Pages } from '../router.svelte.js';
+	import { slide } from 'svelte/transition';
 
 	let selectedFingerprint = $derived(router.activeRoute.pgp.fingerprint);
 
@@ -17,7 +18,7 @@
 </script>
 
 <div class="h-full flex flex-col bg-base-100 border-r border-base-300 w-64">
-	<div class="p-4 border-b border-base-300">
+	<div class="p-4 border-b border-base-300 space-y-2">
 		<button class="btn btn-primary w-full" onclick={handleNewKey}>
 			<svg
 				xmlns="http://www.w3.org/2000/svg"
@@ -30,6 +31,23 @@
 			</svg>
 			Import Key
 		</button>
+		<button class="btn btn-outline w-full" onclick={() => router.openPage(Pages.GENERATE_KEY)}>
+			<svg
+				xmlns="http://www.w3.org/2000/svg"
+				class="h-5 w-5 mr-2"
+				fill="none"
+				viewBox="0 0 24 24"
+				stroke="currentColor"
+			>
+				<path
+					stroke-linecap="round"
+					stroke-linejoin="round"
+					stroke-width="2"
+					d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"
+				/>
+			</svg>
+			Generate Key
+		</button>
 	</div>
 
 	<div class="flex-1 overflow-y-auto p-2 space-y-1">
@@ -39,7 +57,7 @@
 			</div>
 		{/if}
 		{#each keyStore.keys as key (key.getFingerprint())}
-			<div class="flex flex-col">
+			<div class="flex flex-col" transition:slide={{ duration: 200 }}>
 				<a
 					href="/pgp.svelte/{key.getFingerprint()}"
 					class="block group"

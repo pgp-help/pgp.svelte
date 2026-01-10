@@ -104,4 +104,13 @@ describe('KeyStore', () => {
 		expect(k3?.isPrivate()).toBe(true);
 		expect(k3?.getFingerprint()).toBe(fp);
 	});
+
+	it('deletes a key', async () => {
+		const key = await getKeyDetails(publicKeyArmor);
+		await keyStore.addKey(key);
+		expect(keyStore.keys).toHaveLength(1);
+
+		keyStore.deleteKey(key.getFingerprint());
+		expect(keyStore.keys).toHaveLength(0);
+	});
 });

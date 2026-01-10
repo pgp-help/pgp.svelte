@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { router } from './lib/router.svelte.js';
+	import { router, Pages } from './lib/router.svelte.js';
 
 	function handleHome(e: MouseEvent) {
 		e.preventDefault();
@@ -8,7 +8,7 @@
 
 	function handleGuide(e: MouseEvent) {
 		e.preventDefault();
-		router.openGuide();
+		router.openPage(Pages.GUIDE);
 	}
 </script>
 
