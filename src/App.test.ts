@@ -51,7 +51,7 @@ describe('App', () => {
 
 		// Wait for key to be parsed and displayed (this confirms app accepted key)
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainArea).findByText('Public Key', { selector: 'legend' });
+		await within(mainArea).findByText('Public Key', { selector: 'fieldset-legend' });
 
 		await user.type(messageTextarea, 'Hello World');
 
@@ -84,7 +84,7 @@ describe('App', () => {
 
 		// Wait for key to be parsed and displayed
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainArea).findByText('Private Key', { selector: 'legend' });
+		await within(mainArea).findByText('Private Key', { selector: 'fieldset-legend' });
 
 		// Wait for unlock prompt
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);

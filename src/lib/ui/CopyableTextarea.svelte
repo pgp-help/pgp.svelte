@@ -178,7 +178,7 @@
 		{placeholder}
 		class="textarea textarea-code w-full whitespace-nowrap {fixed
 			? 'resize-none'
-			: ''} {className} {error ? 'textarea-error' : ''}"
+			: ''} {className} {error ? 'border-error' : ''}"
 		style={fixed ? 'height: auto; overflow-y: hidden;' : ''}
 		aria-label={label}
 		aria-invalid={error ? 'true' : undefined}

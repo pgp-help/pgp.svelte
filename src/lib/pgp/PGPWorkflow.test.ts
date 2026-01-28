@@ -70,7 +70,7 @@ describe('PGPWorkflow', () => {
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
 
 		// Wait for key to be parsed and recognized as private
-		await screen.findByText('Private Key', { selector: 'legend' });
+		await screen.findByText('Private Key', { selector: 'fieldset-legend' });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);
@@ -103,7 +103,7 @@ describe('PGPWorkflow', () => {
 		const keyTextarea = screen.getByLabelText(/Public Key/i);
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
 
-		await screen.findByText('Private Key', { selector: 'legend' });
+		await screen.findByText('Private Key', { selector: 'fieldset-legend' });
 
 		// Switch to Public Key
 		const switchButton = screen.getByRole('button', { name: /Switch to Public Key/i });
@@ -112,7 +112,7 @@ describe('PGPWorkflow', () => {
 		// Should now be in Encrypt mode (Public Key)
 		expect(screen.getByLabelText(/Input Message/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/Encrypted Output/i)).toBeInTheDocument();
-		expect(screen.getByText('Public Key', { selector: 'legend' })).toBeInTheDocument();
+		expect(screen.getByText('Public Key', { selector: 'fieldset-legend' })).toBeInTheDocument();
 	});
 
 	it('automatically switches to private key (decrypt mode) when pasting encrypted message', async () => {
@@ -129,7 +129,7 @@ describe('PGPWorkflow', () => {
 		const keyTextarea = screen.getByLabelText(/Public Key/i);
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
 
-		await screen.findByText('Private Key', { selector: 'legend' });
+		await screen.findByText('Private Key', { selector: 'fieldset-legend' });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);
@@ -173,7 +173,7 @@ describe('PGPWorkflow', () => {
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
 		const keyTextarea = within(mainArea).getByLabelText(/Public Key/i);
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
-		await screen.findByText('Private Key', { selector: 'legend' });
+		await screen.findByText('Private Key', { selector: 'fieldset-legend' });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);

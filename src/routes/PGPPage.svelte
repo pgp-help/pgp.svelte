@@ -38,7 +38,7 @@
 	}
 </script>
 
-<main class="flex-1 overflow-y-auto p-4 sm:p-8" aria-label="PGP Workflow">
+<main class="flex-1 overflow-y-auto p-6 sm:p-8" aria-label="PGP Workflow">
 	{#if isGenerateKeyPage}
 		<GenerateKey onKeyGenerated={handleNewKey} onCancel={() => router.openHome()} />
 	{:else}

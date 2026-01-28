@@ -16,10 +16,11 @@
 		router.openHome();
 	}
 
-	function handleKeySelect(wrapper: KeyWrapper) {
-		selectedKeyWrapper = wrapper;
-		router.openKey(wrapper.key);
-	}
+	$effect(() => {
+		if (selectedKeyWrapper) {
+			router.openKey(selectedKeyWrapper.key);
+		}
+	});
 
 	function handleImportKey() {
 		selectedKeyWrapper = null;
@@ -36,41 +37,27 @@
 	}
 </script>
 
-<aside aria-label="Sidebar" class="h-full flex flex-col bg-base-200 w-full">
-	<div>
-		<KeyList
-			keys={keyStore.keys}
-			bind:selectedWrapper={selectedKeyWrapper}
-			onKeySelect={handleKeySelect}
-		/>
-	</div>
+<aside aria-label="Sidebar" class="h-full flex-1 bg-base-200 w-full p-6">
+	<div class="space-y-4">
+		<div class="space-y-4">
+			<button class="btn btn-primary w-full" onclick={handleImportKey}>
+				<PlusIcon className="h-5 w-5 mr-2" />
+				Import Key
+			</button>
 
-	<div class="p-4 border-b border-primary/10 space-y-4">
-		<button class="btn btn-primary w-full" onclick={handleImportKey}>
-			<PlusIcon className="h-5 w-5 mr-2" />
-			Import Key
-		</button>
-
-		<button class="btn btn-outline w-full" onclick={handleGenerateKey}>
-			<KeyIcon className="h-5 w-5 mr-2" />
-			Generate Private Key
-		</button>
-	</div>
-	<div class="p-4 border-t border-primary/10">
-		<div>Getting Started</div>
-		<div class="card card-border border-base-300 bg-base-100">
-			<div class="card-body">
-				<p>
-					<strong>How it works:</strong> Type message to encrypt, or paste encrypted text to decrypt.
-				</p>
-				<button class="btn btn-link p-0 h-auto min-h-0 text-primary" onclick={handleLearnMore}>
-					Learn More
-				</button>
+			<button class="btn btn-outline w-full" onclick={handleGenerateKey}>
+				<KeyIcon className="h-5 w-5 mr-2" />
+				Generate Private Key
+			</button>
+		</div>
+		<div class="border-t border-base-300 my-4"></div>
+		<div class="my-2">Your Keyring</div>
+		<div>
+			<div class="space-y-2">
+				<KeyList keys={keyStore.keys} bind:selectedWrapper={selectedKeyWrapper} />
 			</div>
 		</div>
-	</div>
 
-	<div class="p-4 border-t border-primary/10">
 		<div class="card card-border border-base-300 bg-base-100">
 			<div class="card-body">
 				<div class="form-control">
@@ -92,17 +79,32 @@
 						class="btn btn-xs btn-error btn-outline w-full mt-2"
 						onclick={() => clearDataDialog.showModal()}
 					>
-						Clear Saved Data
+						Clear Saved Keys
 					</button>
 				{/if}
 			</div>
 		</div>
+		<div class="border-t border-base-300 my-4"></div>
+		<div class="">
+			<div class="my-2">Getting Started</div>
+			<div class="card card-border border-base-300 bg-base-100">
+				<div class="card-body">
+					<p>
+						<strong>How it works:</strong> Type message to encrypt, or paste encrypted text to decrypt.
+					</p>
+					<button class="btn btn-link p-0 h-auto min-h-0 text-primary" onclick={handleLearnMore}>
+						Learn More
+					</button>
+				</div>
+			</div>
+		</div>
+		<div class="border-t border-base-300 my-4"></div>
 	</div>
 </aside>
 
 <dialog bind:this={clearDataDialog} class="modal" onclick={(e) => e.stopPropagation()}>
 	<div class="modal-box text-base-content cursor-default">
-		<h3 class="font-bold text-lg">Clear Saved Data?</h3>
+		<h3 class="font-bold text-lg">Clear Saved Keys?</h3>
 		<p class="py-4">
 			You have turned off "Persist new keys", but you still have keys saved in your browser storage.
 			Do you want to clear them now?

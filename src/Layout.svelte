@@ -13,25 +13,27 @@
   Root wrapper:
   - min-h-screen: page at least full height
   - md:grid: use grid layout on desktop
-  - md:grid-cols-[16rem_1fr]: sidebar 16rem wide + main column
+  - md:grid-cols-[20rem_1fr]: sidebar 20rem wide + main column
   - md:grid-rows-[5rem_1fr]: top header row (5rem) + content row
 -->
 <div class="min-h-screen grid grid-rows-[5rem_1fr] md:grid-cols-[20rem_1fr]">
 	<!-- Top-left: Brand (desktop) -->
 	<button
-		class="hidden md:flex items-center gap-x-3 px-6 border-b border-primary/10 bg-base-200 cursor-pointer"
+		class="hidden md:flex items-center gap-x-3 px-6 border-b border-base-300 bg-base-200 cursor-pointer"
 		onclick={() => router.openHome()}
 		aria-label="pgp.help"
 	>
 		<AppIcon />
-		<div class="text-lg font-bold">pgp.<span class="text-primary">help</span></div>
+		<div class="text-lg font-bold">
+			pgp.<span class="text-primary">help</span>
+		</div>
 	</button>
 
 	<!-- Top-right: Title -->
-	<header class="h-20 flex items-center px-6 sm:px-8 border-b border-primary/10 md:col-start-2">
+	<header class="h-20 flex items-center px-6 sm:px-8 border-b border-base-300 md:col-start-2">
 		<div class="ml-4">
-			<h1 class="text-2xl font-bold">Encryption tool</h1>
-			<p class="text-sm text-secondary">Secure messaging with OpenPGP</p>
+			<h1 class="text-2xl font-bold text-base-content">Encryption tool</h1>
+			<p class="text-sm text-base-content/70">Secure messaging with OpenPGP</p>
 		</div>
 
 		<!-- Mobile brand -->
@@ -41,7 +43,9 @@
 			aria-label="pgp.help"
 		>
 			<AppIcon />
-			<div class="text-lg font-bold">pgp.<span class="text-primary">help</span></div>
+			<div class="text-lg font-bold">
+				pgp.<span class="text-primary">help</span>
+			</div>
 		</button>
 
 		<!-- Guide link (desktop) -->
@@ -51,7 +55,7 @@
 	</header>
 
 	<!-- Bottom-left: Sidebar (desktop only, always present but may be empty) -->
-	<aside class="hidden md:block bg-base-200 border-r border-primary/10">
+	<aside class="hidden md:block bg-base-200 border-r border-base-300">
 		{@render sidebar()}
 	</aside>
 

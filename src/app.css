@@ -1,6 +1,9 @@
 /* Import Tailwind CSS v4 */
 @import 'tailwindcss';
 
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
 /* Configure daisyUI component library with theme options */
 @plugin "daisyui" {
 	themes:
@@ -20,8 +23,8 @@
 	prefersdark: false;
 	color-scheme: 'light';
 	--color-base-100: oklch(100% 0 0);
-	--color-base-200: oklch(93% 0 0);
-	--color-base-300: oklch(86% 0 0);
+	--color-base-200: oklch(98% 0 0);
+	--color-base-300: oklch(94% 0 0);
 	--color-base-content: oklch(22.389% 0.031 278.072);
 	--color-accent: oklch(58% 0.158 241.966);
 	--color-accent-content: oklch(100% 0 0);
@@ -39,14 +42,34 @@
 	--color-warning-content: oklch(0% 0 0);
 	--color-error: oklch(70% 0.191 22.216);
 	--color-error-content: oklch(0% 0 0);
-	--radius-selector: 0.25rem;
-	--radius-field: 0.25rem;
-	--radius-box: 0.25rem;
+	--radius-selector: 0.5rem;
+	--radius-field: 0.5rem;
+	--radius-box: 0.75rem;
 	--size-selector: 0.25rem;
 	--size-field: 0.25rem;
 	--border: 1px;
 	--depth: 0;
 	--noise: 0;
+}
+
+/* 
+ * Global font settings
+ */
+:root {
+	--font-sans: 'Inter', sans-serif;
+	--font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+	font-family: var(--font-sans);
+}
+
+.font-mono {
+	font-family: var(--font-mono);
+}
+
+.fieldset-legend {
+	@apply text-sm font-semibold text-base-content flex items-center gap-2;
 }
 
 /* 

@@ -32,9 +32,9 @@
 	}
 </script>
 
-<div class="p-4 space-y-2">
+<div class="space-y-2">
 	{#if keys.length === 0}
-		<div class="text-center p-4 text-base-content/50 text-sm">
+		<div class="text-center p-4 text-base-content/60 text-sm">
 			No keys found. Create or import one to get started.
 		</div>
 	{/if}
@@ -45,7 +45,7 @@
 
 		<div transition:slide={{ duration: 200 }}>
 			<div
-				class="card card-selectable {isSelected ? 'card-selected' : ''}"
+				class="card card-selectable p-3 {isSelected ? 'card-selected' : ''}"
 				role="button"
 				tabindex="0"
 				onclick={() => (selectedWrapper = wrapper)}
@@ -53,9 +53,9 @@
 					if (e.key === 'Enter' || e.key === ' ') selectedWrapper = wrapper;
 				}}
 			>
-				<div class="card-body p-3 flex flex-row items-center gap-3">
+				<div class="flex items-start gap-3">
 					<!-- Avatar -->
-					<Avatar cryptoKey={wrapper.key} size={48} />
+					<Avatar cryptoKey={wrapper.key} size={40} />
 
 					<!-- Name + badge + subtitle -->
 					<div class="min-w-0 flex-1">
