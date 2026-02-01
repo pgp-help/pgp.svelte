@@ -70,7 +70,7 @@ describe('PGPWorkflow', () => {
 
 		// Wait for key to be parsed and recognized as private
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainArea).findByText('Private Key');
+		await within(mainArea).findByRole('heading', { name: /Private Key/i });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);
@@ -104,7 +104,7 @@ describe('PGPWorkflow', () => {
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
 
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainArea).findByText('Private Key');
+		await within(mainArea).findByRole('heading', { name: /Private Key/i });
 
 		// Focus on the key card to make the switch button visible
 		const keyCard = mainArea.querySelector('.card-field');
@@ -119,7 +119,7 @@ describe('PGPWorkflow', () => {
 		// Should now be in Encrypt mode (Public Key)
 		expect(screen.getByLabelText(/Input Message/i)).toBeInTheDocument();
 		expect(screen.getByLabelText(/Encrypted Output/i)).toBeInTheDocument();
-		expect(screen.getByText('Public Key')).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /Public Key/i })).toBeInTheDocument();
 	});
 
 	it('automatically switches to private key (decrypt mode) when pasting encrypted message', async () => {
@@ -137,7 +137,7 @@ describe('PGPWorkflow', () => {
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
 
 		const mainAreaDecrypt = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainAreaDecrypt).findByText('Private Key');
+		await within(mainAreaDecrypt).findByRole('heading', { name: /Private Key/i });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);
@@ -187,7 +187,7 @@ describe('PGPWorkflow', () => {
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
 		const keyTextarea = within(mainArea).getByLabelText(/Key/i);
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
-		await within(mainArea).findByText('Private Key');
+		await within(mainArea).findByRole('heading', { name: /Private Key/i });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);
@@ -249,7 +249,7 @@ El/w
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
 
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainArea).findByText('Private Key');
+		await within(mainArea).findByRole('heading', { name: /Private Key/i });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);
@@ -282,7 +282,7 @@ El/w
 		// Should now be in Encrypt mode (Public Key)
 		// Check the input placeholder which indicates encrypt/verify mode
 		expect(inputMessage.getAttribute('placeholder')).toMatch(/Type your secret message/);
-		expect(screen.getByText('Public Key')).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /Public Key/i })).toBeInTheDocument();
 
 		// Focus on the key card again to make the switch button visible
 		if (keyCard) {
@@ -297,6 +297,6 @@ El/w
 
 		// Should be back in sign/decrypt mode (private key with no message)
 		expect(inputMessage.getAttribute('placeholder')).toMatch(/Type message to sign/);
-		expect(screen.getByText('Private Key')).toBeInTheDocument();
+		expect(screen.getByRole('heading', { name: /Private Key/i })).toBeInTheDocument();
 	});
 });

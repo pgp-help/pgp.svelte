@@ -9,6 +9,7 @@
 	import { type CryptoKey, wrapPGPKey, isPGPKey } from './crypto';
 	import SelectableText from '../ui/SelectableText.svelte';
 	import CopyButtons from '../ui/CopyButtons.svelte';
+	import KeyText from '../ui/KeyText.svelte';
 
 	// Bindable because when we decrypt the key we modify it in place and expect the
 	// parent component to see the updated value.
@@ -195,19 +196,7 @@
 			isNewKey = false;
 			keyHasFocus = false;
 		}
-
-		// const currentTarget = event.currentTarget as HTMLElement;
-		// const relatedTarget = event.relatedTarget as Node | null;
-
-		// if (!currentTarget.contains(relatedTarget)) {
-		// 	publicKeyOpen = false;
-		// 	privateKeyOpen = false;
-		// 	isNewKey = false;
-
-		// }
 	}
-
-	let cardTitle = $derived(key.isPrivate() ? 'Private Key' : 'Public Key');
 </script>
 
 {#snippet privateKeySnippet()}
@@ -248,7 +237,9 @@
 >
 	<!-- Header -->
 	<div class="card-field-header">
-		<h3>{cardTitle}</h3>
+		<h3>
+			<KeyText isPrivate={key.isPrivate()} />
+		</h3>
 		<CopyButtons value={keyWrapper.key.toPublic().getArmor()} showLink={true} />
 	</div>
 

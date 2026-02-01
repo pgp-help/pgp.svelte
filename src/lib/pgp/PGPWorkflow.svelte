@@ -8,6 +8,7 @@
 	import { untrack } from 'svelte';
 	import CopyButtons from '../ui/CopyButtons.svelte';
 	import SelectableText from '../ui/SelectableText.svelte';
+	import KeyText from '../ui/KeyText.svelte';
 
 	interface Props {
 		keyWrapper: KeyWrapper | null;
@@ -63,27 +64,6 @@
 		message.trim().startsWith('-----BEGIN PGP MESSAGE-----') || isAGEEncryptedMessage(message)
 	);
 	let isSignedMessage = $derived(message.trim().startsWith('-----BEGIN PGP SIGNED MESSAGE-----'));
-
-	let operationMessage = $derived.by(() => {
-		if (!currentOperation) {
-			const ret = isPrivate
-				? 'Will Encrypt or Verify with Public Key'
-				: 'Will Decrypt or Sign with Private Key';
-			return ret;
-		}
-		switch (currentOperation) {
-			case OperationType.Encrypt:
-				return 'Encrypting with Public Key';
-			case OperationType.Decrypt:
-				return 'Decrypting with Private Key';
-			case OperationType.Sign:
-				return 'Signing with Private Key';
-			case OperationType.Verify:
-				return 'Verifying Signature with Public Key';
-			default:
-				return '';
-		}
-	});
 
 	let currentOperation = $derived.by(() => {
 		if (message.trim() === '') return null;
@@ -193,6 +173,28 @@
 	});
 </script>
 
+{#snippet idleMessage()}
+	{#if isPrivate}
+		<!-- If I hold a private key, I can encrypt for myself (using public) -->
+		Will Encrypt or Verify with <KeyText isPrivate={true} />
+	{:else}
+		<!-- If I hold a public key, I can verify signatures (using public) -->
+		Will Verify Signature from <KeyText isPrivate={false} />
+	{/if}
+{/snippet}
+
+{#snippet activeMessage()}
+	{#if currentOperation === OperationType.Encrypt}
+		Encrypting with <KeyText {isPrivate} />
+	{:else if currentOperation === OperationType.Decrypt}
+		Decrypting with <KeyText isPrivate={true} />
+	{:else if currentOperation === OperationType.Sign}
+		Signing with <KeyText isPrivate={true} /> to prove identity
+	{:else if currentOperation === OperationType.Verify}
+		Verifying Signature with <KeyText isPrivate={false} />
+	{/if}
+{/snippet}
+
 <div class="container mx-auto max-w-4xl space-y-6">
 	<div class="space-y-6">
 		<!-- Key Section -->
@@ -245,7 +247,13 @@
 						</div>
 					{:else if keyWrapper != null}
 						<div class="card-field-footer">
-							{operationMessage}
+							<span>
+								{#if !currentOperation}
+									{@render idleMessage()}
+								{:else}
+									{@render activeMessage()}
+								{/if}
+							</span>
 						</div>
 					{/if}
 				</div>

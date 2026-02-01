@@ -5,6 +5,7 @@
 	import { keyStore, PersistenceType, type KeyWrapper } from '../lib/pgp/keyStore.svelte';
 	import { router, Pages } from './router.svelte';
 	import WarningIcon from '../lib/ui/icons/WarningIcon.svelte';
+	import KeyText from '../lib/ui/KeyText.svelte';
 
 	let { selectedKeyWrapper = $bindable(null) }: { selectedKeyWrapper: KeyWrapper | null } =
 		$props();
@@ -56,7 +57,7 @@
 				<!-- Contacts (Public Keys) Section -->
 				{#if keyStore.publicKeys.length > 0}
 					<div>
-						<h3 class="mb-3">Contacts</h3>
+						<h3 class="mb-3"><KeyText text="Contacts" /></h3>
 						<div class="space-y-2">
 							<KeyList keys={keyStore.publicKeys} bind:selectedWrapper={selectedKeyWrapper} />
 						</div>
@@ -66,7 +67,7 @@
 				<!-- Identities (Private Keys) Section -->
 				{#if keyStore.privateKeys.length > 0}
 					<div>
-						<h3 class="mb-3">Identities</h3>
+						<h3 class="mb-3"><KeyText text="Identities" isPrivate /></h3>
 						<div class="space-y-2">
 							<KeyList keys={keyStore.privateKeys} bind:selectedWrapper={selectedKeyWrapper} />
 						</div>

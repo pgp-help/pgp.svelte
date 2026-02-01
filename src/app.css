@@ -202,9 +202,9 @@ body {
 	}
 
 	/* Header Label Styling - FIXED COLOR */
-	.card-field-header label,
-	.card-field-header h3,
-	.card-field-header span {
+	.card-field-header > label,
+	.card-field-header > h3,
+	.card-field-header > span {
 		@apply text-xs font-bold uppercase tracking-wider select-none cursor-pointer block truncate;
 
 		/* Use the static header text variable */
