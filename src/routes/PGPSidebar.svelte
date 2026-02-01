@@ -1,10 +1,11 @@
 <script lang="ts">
 	import KeyList from '../lib/pgp/KeyList.svelte';
 	import PlusIcon from '../lib/ui/icons/PlusIcon.svelte';
-	import KeyIcon from '../lib/ui/icons/KeyIcon.svelte';
+	import PrivateKeyIcon from '../lib/ui/icons/Lock-privkey.svelte';
 	import { keyStore, PersistenceType, type KeyWrapper } from '../lib/pgp/keyStore.svelte';
 	import { router, Pages } from './router.svelte';
 	import WarningIcon from '../lib/ui/icons/WarningIcon.svelte';
+	import KeyText from '../lib/ui/KeyText.svelte';
 
 	let { selectedKeyWrapper = $bindable(null) }: { selectedKeyWrapper: KeyWrapper | null } =
 		$props();
@@ -46,8 +47,8 @@
 			</button>
 
 			<button class="btn btn-outline w-full" onclick={handleGenerateKey}>
-				<KeyIcon class="h-5 w-5 mr-2" />
-				Generate Private Key
+				<PrivateKeyIcon class="h-5 w-5 mr-2" />
+				Generate New Keys
 			</button>
 		</div>
 		<div class="border-t border-base-300 my-4"></div>
@@ -56,7 +57,7 @@
 				<!-- Contacts (Public Keys) Section -->
 				{#if keyStore.publicKeys.length > 0}
 					<div>
-						<h3 class="mb-3">Contacts</h3>
+						<h3 class="mb-3"><KeyText text="Contacts" /></h3>
 						<div class="space-y-2">
 							<KeyList keys={keyStore.publicKeys} bind:selectedWrapper={selectedKeyWrapper} />
 						</div>
@@ -66,7 +67,7 @@
 				<!-- Identities (Private Keys) Section -->
 				{#if keyStore.privateKeys.length > 0}
 					<div>
-						<h3 class="mb-3">Identities</h3>
+						<h3 class="mb-3"><KeyText text="Identities" isPrivate /></h3>
 						<div class="space-y-2">
 							<KeyList keys={keyStore.privateKeys} bind:selectedWrapper={selectedKeyWrapper} />
 						</div>

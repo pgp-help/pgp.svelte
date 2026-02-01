@@ -37,7 +37,7 @@ describe('PGPWorkflow Sign/Verify', () => {
 		await fireEvent.input(keyTextarea, { target: { value: validPrivateKey } });
 
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainArea).findByText('Private Key');
+		await within(mainArea).findByRole('heading', { name: /Private Key/i });
 
 		// Unlock
 		const passwordInput = await screen.findByLabelText(/Unlock Private Key/i);

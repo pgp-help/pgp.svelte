@@ -53,7 +53,7 @@ describe('App', () => {
 
 		// Wait for key to be parsed and displayed (this confirms app accepted key)
 		const mainArea = screen.getByRole('main', { name: 'PGP Workflow' });
-		await within(mainArea).findByText('Public Key');
+		await within(mainArea).findByRole('heading', { name: /Public Key/i });
 
 		await user.type(messageTextarea, 'Hello World');
 
