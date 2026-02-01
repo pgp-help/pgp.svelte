@@ -1,5 +1,5 @@
 <script lang="ts">
-	import IconPrivate from './icons/privkey.svelte';
+	import IconPrivate from './icons/KeyIcon.svelte';
 	import IconPublic from './icons/pubkey.svelte';
 
 	let {

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import KeyList from '../lib/pgp/KeyList.svelte';
 	import PlusIcon from '../lib/ui/icons/PlusIcon.svelte';
-	import PrivateKeyIcon from '../lib/ui/icons/privkey.svelte';
+	import PrivateKeyIcon from '../lib/ui/icons/Lock-privkey.svelte';
 	import { keyStore, PersistenceType, type KeyWrapper } from '../lib/pgp/keyStore.svelte';
 	import { router, Pages } from './router.svelte';
 	import WarningIcon from '../lib/ui/icons/WarningIcon.svelte';
