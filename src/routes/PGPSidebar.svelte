@@ -1,7 +1,7 @@
 <script lang="ts">
 	import KeyList from '../lib/pgp/KeyList.svelte';
 	import PlusIcon from '../lib/ui/icons/PlusIcon.svelte';
-	import KeyIcon from '../lib/ui/icons/KeyIcon.svelte';
+	import PrivateKeyIcon from '../lib/ui/icons/privkey.svelte';
 	import { keyStore, PersistenceType, type KeyWrapper } from '../lib/pgp/keyStore.svelte';
 	import { router, Pages } from './router.svelte';
 	import WarningIcon from '../lib/ui/icons/WarningIcon.svelte';
@@ -47,8 +47,8 @@
 			</button>
 
 			<button class="btn btn-outline w-full" onclick={handleGenerateKey}>
-				<KeyIcon class="h-5 w-5 mr-2" />
-				Generate Private Key
+				<PrivateKeyIcon class="h-5 w-5 mr-2" />
+				Generate New Keys
 			</button>
 		</div>
 		<div class="border-t border-base-300 my-4"></div>
